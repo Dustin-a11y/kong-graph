@@ -1,0 +1,18 @@
+{
+  "method": "qmg-bm25-hybrid-70-30-chunked-session-v1.3",
+  "model": "thenlper/gte-large",
+  "chunk_size": 500,
+  "chunk_overlap": 100,
+  "hybrid_ratio": "70% embedding + 30% BM25",
+  "top_chunks_per_session": 3,
+  "embed_batch_size": 256,
+  "dataset": "/home/dt/qmg-release-repo/benchmarks/longmemeval/native-official-20260716/LongMemEval/data/longmemeval_s_cleaned.json",
+  "dataset_hash": "d6f21ea9d60a0d56f34a05b609c79c88a451d2ae03597821ea3d5a9678c3a442",
+  "code_hash": "6f582a52476d1414",
+  "random_seed": 42,
+  "device": "cpu",
+  "max_items": 1,
+  "skip_first": 0,
+  "started_at": "2026-07-16T01:28:19.173077",
+  "runner_version": "1.3.0"
+}
