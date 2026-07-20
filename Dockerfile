@@ -7,9 +7,7 @@ LABEL org.opencontainers.image.version="1.3.0"
 
 WORKDIR /app
 
-# Copy source into image, then install (not yet on PyPI)
-COPY . /app
-RUN pip install --no-cache-dir /app
+RUN pip install --no-cache-dir kong-graph
 
 ENV KONG_SIMILARITY_THRESHOLD=0.3
 ENV KONG_DATA_DIR=/data

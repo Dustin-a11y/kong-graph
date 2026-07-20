@@ -1,7 +1,44 @@
+Metadata-Version: 2.4
+Name: kong-graph
+Version: 1.3.0
+Summary: Classical memory graph for AI agents — 99.4 percent recall with chunked embeddings. Knowledge graph + graph traversal + greedy subgraph selection.
+Home-page: https://github.com/Dustin-a11y/kong-graph
+Author: Coinkong (Chef's Attraction)
+License: MIT
+Project-URL: Source Code, https://github.com/Dustin-a11y/kong-graph
+Project-URL: Issue Tracker, https://github.com/Dustin-a11y/kong-graph/issues
+Project-URL: Benchmark Results, https://github.com/Dustin-a11y/kong-graph/tree/main/benchmarks
+Project-URL: LongMemEval Submission, https://github.com/xiaowu0162/LongMemEval/issues
+Project-URL: Quantum Memory Graph, https://github.com/Dustin-a11y/quantum-memory-graph
+Keywords: memory,knowledge-graph,agents,retrieval,graph,embeddings,ai
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sentence-transformers>=2.2.0
+Requires-Dist: networkx>=3.0
+Requires-Dist: numpy>=1.24.0
+Provides-Extra: api
+Requires-Dist: fastapi>=0.100.0; extra == "api"
+Requires-Dist: uvicorn>=0.20.0; extra == "api"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Dynamic: license-file
+
 # Kong Graph 🦍🧠
 
-[![PyPI version](https://img.shields.io/pypi/v/kong-graph)](https://pypi.org/project/kong-graph/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/kong-graph)](https://pypi.org/project/kong-graph/)
+[![PyPI version](https://img.shields.io/pypi/v/quantum-memory-graph)](https://pypi.org/project/quantum-memory-graph/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/quantum-memory-graph)](https://pypi.org/project/quantum-memory-graph/)
 [![LongMemEval](https://img.shields.io/badge/LongMemEval-%231-94.26%25_NDCG@10-brightgreen)](https://github.com/xiaowu0162/LongMemEval/issues/46)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
