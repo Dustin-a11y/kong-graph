@@ -1,7 +1,7 @@
 # Kong Graph 🦍🧠
 
 [![PyPI version](https://img.shields.io/pypi/v/quantum-memory-graph)](https://pypi.org/project/quantum-memory-graph/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/kong-graph)](https://pypi.org/project/quantum-memory-graph/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/quantum-memory-graph)](https://pypi.org/project/quantum-memory-graph/)
 [![LongMemEval](https://img.shields.io/badge/LongMemEval-%231-94.26%25_NDCG@10-brightgreen)](https://github.com/xiaowu0162/LongMemEval/issues/46)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
