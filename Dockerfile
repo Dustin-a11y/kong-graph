@@ -14,6 +14,9 @@ ENV KONG_DATA_DIR=/data
 
 RUN mkdir -p /data
 
+RUN useradd -m -s /bin/bash kong && chown -R kong:kong /app /data
+USER kong
+
 EXPOSE 8502
 
 CMD ["python", "-m", "kong_graph", "--host", "0.0.0.0", "--port", "8502"]
