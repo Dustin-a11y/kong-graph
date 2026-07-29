@@ -21,6 +21,8 @@ from typing import List, Dict, Optional, Tuple, Set
 from dataclasses import dataclass, field
 from datetime import datetime
 
+from .learning import RecallTracker
+
 try:
     from rank_bm25 import BM25Okapi
     _HAS_BM25 = True
@@ -97,6 +99,10 @@ class MemoryGraph:
         self._bm25 = None
         self._bm25_corpus: List[str] = []
         self._entity_index: Dict[str, set] = {}
+        
+        # Self-learning: recall pattern tracking and learned edge weights
+        self.recall_tracker = RecallTracker("")
+        self.learned_weights: Dict[Tuple[str, str], float] = {}
 
     @property
     def embedder(self):
@@ -454,7 +460,24 @@ class MemoryGraph:
                         )
                         frontier.append((neighbor, depth + 1))
         
+        # Apply learned edge weight boosts before returning
+        self._apply_learned_boosts(reachable, seeds)
+        
         return reachable
+
+    def _apply_learned_boosts(self, reachable: Dict[str, float], seeds: List[str]):
+        """Apply learned edge weight boosts to reachable nodes based on seed connections."""
+        if not self.learned_weights:
+            return
+        seed_set = set(seeds)
+        for nid in reachable:
+            boost_sum = 0.0
+            for seed in seed_set:
+                key = (nid, seed) if nid < seed else (seed, nid)
+                if key in self.learned_weights:
+                    boost_sum += self.learned_weights[key]
+            if boost_sum > 0:
+                reachable[nid] *= (1.0 + min(boost_sum, 1.0) * 0.12)
 
     def get_subgraph_data(self, node_ids: List[str]) -> Dict:
         """
@@ -523,6 +546,40 @@ class MemoryGraph:
             obj._bm25 = None
         
         return obj
+
+    def recall_with_learning(self, query: str, k: int = 5, **kwargs) -> List[Dict]:
+        """
+        Recall memories and log the pattern for learning.
+        Learning boosts are applied automatically via get_neighborhood.
+        """
+        hops = kwargs.get("hops", 2)
+        top_seeds = kwargs.get("top_seeds", 5)
+        neighborhood = self.get_neighborhood(query=query, hops=hops, top_seeds=top_seeds)
+        
+        # Sort and take top-k
+        sorted_nodes = sorted(neighborhood.items(), key=lambda x: x[1], reverse=True)[:k]
+        results = [
+            {"id": nid, "text": self.memories[nid].text, "score": score}
+            for nid, score in sorted_nodes
+        ]
+        
+        # Log the recall pattern
+        node_ids = [r["id"] for r in results]
+        self.recall_tracker.log_recall(query, node_ids)
+        
+        return results
+
+    def learn(self, min_co_recalls: int = 2):
+        """
+        Process recall history and update learned edge weights.
+        Call this periodically (e.g., after every 100 recalls).
+        """
+        self.learned_weights = self.recall_tracker.learn_weights(min_co_recalls)
+        return self.learned_weights
+
+    def get_memory_scores(self) -> Dict[str, float]:
+        """Get per-memory value scores based on recall frequency."""
+        return self.recall_tracker.get_memory_values()
 
     def _rebuild_indices(self):
         """Rebuild entity index and BM25 corpus from existing memories."""

@@ -12,12 +12,13 @@ Copyright 2026 Coinkong (Chef's Attraction). MIT License.
 __version__ = "1.3.0"
 
 from .graph import MemoryGraph
+from .learning import RecallTracker
 from .subgraph_optimizer import optimize_subgraph
 from .pipeline import recall, store, get_stm, set_stm
 from .recency import ShortTermMemory, RecencyBooster, WorkingMemory, ConversationContext
 
 __all__ = [
-    "MemoryGraph", "optimize_subgraph", "recall", "store",
+    "MemoryGraph", "RecallTracker", "optimize_subgraph", "recall", "store",
     "ShortTermMemory", "RecencyBooster", "WorkingMemory", "ConversationContext",
     "get_stm", "set_stm",
 ]

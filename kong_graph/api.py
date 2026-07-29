@@ -147,7 +147,39 @@ async def api_recall(req: RecallRequest):
         gamma_cov=req.gamma_cov,
         max_candidates=req.max_candidates,
     )
+    # Log recall pattern for self-learning
+    g = get_graph()
+    if g and result.get("memories"):
+        node_ids = []
+        for mem in result["memories"]:
+            # Derive memory ID from text
+            from .graph import Memory
+            mid = Memory.make_id(mem["text"])
+            if mid in g.memories:
+                node_ids.append(mid)
+        if node_ids:
+            g.recall_tracker.log_recall(req.query, node_ids)
     return result
+
+
+@app.post("/learn")
+async def learn_weights():
+    """Process recall history and update learned edge weights."""
+    g = get_graph()
+    if g is None:
+        raise HTTPException(status_code=503, detail="Graph not loaded")
+    weights = g.learn()
+    return {"learned_edges": len(weights), "weights": {f"{a}<->{b}": w for (a,b), w in list(weights.items())[:20]}}
+
+
+@app.get("/scores")
+async def memory_scores():
+    """Get memory value scores based on recall frequency."""
+    g = get_graph()
+    if g is None:
+        raise HTTPException(status_code=503, detail="Graph not loaded")
+    scores = g.get_memory_scores()
+    return {"scored_memories": len(scores), "top": dict(sorted(scores.items(), key=lambda x: x[1], reverse=True)[:10])}
 
 
 @app.get("/stats")
